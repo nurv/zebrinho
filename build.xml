@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!-- Building
+     Copyright (C) 2012  Artur Ventura
+
+Author: Artur Ventura
+
+This file is part of Zebrinho.
+
+Zebrinho is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Zebrinho is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>. -->
+<project name="mjava" default="war" basedir=".">
+
+	<property name="src" value="src" />
+	<property name="build" value="WebContent/WEB-INF/classes" />
+	<property name="lib" value="WebContent/WEB-INF/lib" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}" />
+                <delete dir="war/FenixDomainBrowser" /> 
+                <delete file="fdb.war" />
+                <delete dir="war/WEB-INF/deploy/FenixDomainBrowser" /> 
+	</target>
+
+	<target name="compile" depends="init">
+		<javac debug="on" srcdir="${src}" destdir="${build}">
+            <classpath>
+				<pathelement path="${src}" />
+				<pathelement path="${build}" />
+				<fileset file="${lib}/*" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="war" depends="compile">
+		<war basedir="war" destfile="zebrinho.war" webxml="WebContent/WEB-INF/web.xml">
+			<webinf dir="war/WEB-INF/">
+				<include name="**/*.jar" />
+			</webinf>
+		</war>
+	</target>
+</project>
